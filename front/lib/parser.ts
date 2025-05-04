@@ -9,6 +9,10 @@ export type WordEntry = {
   memo: string;
 };
 
+export type WordEntryWithUser = WordEntry & {
+  username: string;
+};
+
 // 汎用的な Markdown パース関数
 export function parseMarkdown(markdown: string): WordEntry[] {
   const lines = markdown.split("\n");

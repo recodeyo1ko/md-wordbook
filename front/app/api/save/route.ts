@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
 
-    const markdown = generateMarkdown(words, `${username}の単語帳`);
+    const markdown = generateMarkdown(words, `${username}`);
     const filePath = path.join(process.cwd(), "words", `${username}.md`);
     fs.writeFileSync(filePath, markdown, "utf-8");
 

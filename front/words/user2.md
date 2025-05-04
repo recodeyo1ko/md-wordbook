@@ -1,4 +1,4 @@
-# user2の単語帳
+# user2
 
 ## ESXi
 

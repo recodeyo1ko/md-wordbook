@@ -5,5 +5,5 @@ import WordClient from "./WordClient"; // クライアント側の処理を分�
 
 export default async function Page() {
   const words: WordEntry[] = await loadAllWordEntries();
-  return <WordClient words={words} />;
+  return <WordClient />; // クライアントコンポーネントを使用
 }

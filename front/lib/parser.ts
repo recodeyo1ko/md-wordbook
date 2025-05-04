@@ -52,7 +52,6 @@ export function parseMarkdown(markdown: string): WordEntry[] {
   return words;
 }
 
-// ファイル読み込み込みで使いたい場合
 export function parseMarkdownFile(filePath: string): WordEntry[] {
   const content = fs.readFileSync(filePath, "utf-8");
   return parseMarkdown(content);

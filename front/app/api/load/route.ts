@@ -1,4 +1,3 @@
-// app/api/load/route.ts
 import fs from "fs";
 import path from "path";
 import { NextResponse } from "next/server";

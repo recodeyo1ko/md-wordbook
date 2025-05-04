@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
 import { WordEntry } from "@/lib/parser";
 import { validateWordEntry } from "@/lib/validate";
+import CreatableSelect from "react-select/creatable";
 
 type Props = {
   word?: WordEntry;
@@ -27,6 +30,13 @@ export default function WordModal({
     memo: "",
   });
 
+  // 全タグ候補一覧を生成（重複なし）
+  const tagOptions = useMemo(() => {
+    const tagSet = new Set<string>();
+    existingWords.forEach((w) => w.tags.forEach((tag) => tagSet.add(tag)));
+    return Array.from(tagSet).map((tag) => ({ value: tag, label: tag }));
+  }, [existingWords]);
+
   useEffect(() => {
     if (word) {
       setForm(word);
@@ -35,20 +45,27 @@ export default function WordModal({
     }
   }, [word, isOpen]);
 
-  const handleChange = (key: keyof WordEntry, value: string) => {
-    setForm((prev) => ({
-      ...prev,
-      [key]: key === "tags" ? value.split(",").map((s) => s.trim()) : value,
-    }));
-  };
-
   const isTitleDuplicate = (title: string): boolean => {
     const lower = title.toLowerCase().trim();
     return existingWords.some(
       (w) =>
         w.title.toLowerCase().trim() === lower &&
-        (!word || w.title !== word.title) // 自分以外に同名がある場合
+        (!word || w.title !== word.title)
     );
+  };
+
+  const handleChange = (key: keyof WordEntry, value: any) => {
+    if (key === "tags") {
+      setForm((prev) => ({
+        ...prev,
+        tags: value.map((v: any) => v.value),
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+    }
   };
 
   const handleSave = () => {
@@ -95,11 +112,13 @@ export default function WordModal({
           className="w-full border px-3 py-1 mb-3"
         />
 
-        <label className="block mb-2">タグ（カンマ区切り）</label>
-        <input
-          value={form.tags.join(", ")}
-          onChange={(e) => handleChange("tags", e.target.value)}
-          className="w-full border px-3 py-1 mb-3"
+        <label className="block mb-2">タグ（複数選択可、新規登録は入力）</label>
+        <CreatableSelect
+          isMulti
+          value={form.tags.map((tag) => ({ value: tag, label: tag }))}
+          onChange={(selected) => handleChange("tags", selected)}
+          options={tagOptions}
+          className="mb-3"
         />
 
         <label className="block mb-2">メモ</label>

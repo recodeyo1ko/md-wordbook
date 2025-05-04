@@ -17,10 +17,14 @@ async function saveWordsToServer(username: string, words: WordEntry[]) {
   return result;
 }
 
-export default function WordClient() {
+type Props = {
+  words: WordEntry[];
+};
+
+export default function WordClient({ words: initialWords }: Props) {
   const [users, setUsers] = useState<string[]>([]);
   const [username, setUsername] = useState<string>("");
-  const [words, setWords] = useState<WordEntry[]>([]);
+  const [words, setWords] = useState<WordEntry[]>(initialWords);
   const [selectedWord, setSelectedWord] = useState<WordEntry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -161,7 +165,7 @@ export default function WordClient() {
           onClick={handleSaveToFile}
           className="px-4 py-2 bg-blue-600 text-white rounded"
         >
-          💾 保存する
+          💾 mdファイルを更新する
         </button>
       </div>
 

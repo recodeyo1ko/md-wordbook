@@ -1,4 +1,4 @@
-# user1の単語帳
+# user1 の単語帳
 
 ## iSCSI
 
